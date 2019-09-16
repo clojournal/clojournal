@@ -10,7 +10,7 @@
  :nrepl       false
 
  :builds      {:script {:target           :node-script
-                        :main             cli.core/main
+                        :main             nl.epij.eledger.cli/-main
                         :output-to        "target/eledger.js"
                         :devtools         {:enabled false}
                         :compiler-options {#_#_:optimizations :advanced}}}}
