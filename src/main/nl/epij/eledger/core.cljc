@@ -26,7 +26,7 @@
 (s/def ::eledger/payee (s/or :keyword keyword?
                              :string ::non-blank-string))
 
-(s/def ::acceptable-amount (s/and double? some? #(> % -1e230) #(< % 1e230)))
+(s/def ::acceptable-amount (s/double-in :infinite? false :NaN? false :min 1e-240 :max 1e240))
 
 (s/def ::eledger/amount (s/with-gen (s/and string? some?)
                                     (fn [] (gen/fmap
