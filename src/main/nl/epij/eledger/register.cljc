@@ -23,8 +23,8 @@
   {'time/date         t/parse
    'eledger/date      str
    ;;'ledger/commodity (comp ::local-currency/id local-currency/abbreviation->currency)
-   'eledger/payee     (comp special-payees str-or-keyword)
-   'eledger/account   (comp special-accounts str-or-keyword)
+   'eledger/payee     (comp (fn [payee] (get special-payees payee payee)) str-or-keyword)
+   'eledger/account   (comp (fn [account] (get special-accounts account account)) str-or-keyword)
    'eledger/line-item (fn [line-item] (->> line-item
                                            (into {} (remove (comp str/blank? str second)))))})
 
