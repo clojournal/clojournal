@@ -43,3 +43,8 @@ Either `::eledger/edn-register` for a register with EDN output or any string tha
 ### `options`
 
 TODO
+
+## References
+
+- Ledger CLI website: https://www.ledger-cli.org
+- Ledger CLI tutorial: https://p.epij.nl/ledger-cli/accounting/2018/08/23/real-world-ledger-part-1/
