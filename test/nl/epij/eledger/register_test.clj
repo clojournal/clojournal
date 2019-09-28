@@ -134,14 +134,12 @@
                                       :exchange-total-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
                                                                                                :value     "1185"}
                                       :payee                 :foo.bar.payee/interactive-brokers}
-          #:nl.epij.eledger.line-item{:account               :assets/checking
-                                      :amount                #:nl.epij.eledger.monetary-amount{:commodity "$"
-                                                                                               :value     "-1337"}
-                                      :commodity             "$"
-                                      :date                  #time/date "2019-07-01"
-                                      :exchange              "€"
-                                      :exchange-amount       #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "-1184.542299"}
-                                      :exchange-total-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "0"}
-                                      :payee                 :foo.bar.payee/interactive-brokers}])))
+          #:nl.epij.eledger.line-item{:account         :assets/checking
+                                      :amount          #:nl.epij.eledger.monetary-amount{:commodity "$"
+                                                                                         :value     "-1337"}
+                                      :commodity       "$"
+                                      :date            #time/date "2019-07-01"
+                                      :exchange        "€"
+                                      :exchange-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
+                                                                                         :value     "-1184.542299"}
+                                      :payee           :foo.bar.payee/interactive-brokers}])))

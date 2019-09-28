@@ -47,7 +47,7 @@
                                                  ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)})))
                                     (update ::line-item/exchange-total-amount
                                             (fn [amt]
-                                              (when (and exchange amt)
+                                              (when (and exchange (not (str/blank? amt)))
                                                 {::monetary-amount/commodity exchange
                                                  ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)})))))))})
 
