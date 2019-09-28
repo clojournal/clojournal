@@ -38,19 +38,19 @@
                                         (if commodity
                                           {::monetary-amount/commodity commodity
                                            ::monetary-amount/value     (-> amt (str/replace commodity "") str/trim)}
-                                          {::monetary-amount/value amt})))
+                                          {::monetary-amount/value (str/trim amt)})))
                               (update ::line-item/exchange-amount
                                       (fn [amt]
                                         (if exchange
                                           {::monetary-amount/commodity exchange
                                            ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)}
-                                          {::monetary-amount/value amt})))
+                                          {::monetary-amount/value (str/trim amt)})))
                               (update ::line-item/exchange-total-amount
                                       (fn [amt]
                                         (if exchange
                                           {::monetary-amount/commodity exchange
                                            ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)}
-                                          {::monetary-amount/value amt}))))))})
+                                          {::monetary-amount/value (str/trim amt)}))))))})
 
 (defn parse
   [output-key]
