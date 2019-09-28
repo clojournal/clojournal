@@ -19,6 +19,4 @@
 
         (is (= (get result :failure) []))
 
-        )))
-
-  (clojure.pprint/pprint (s/exercise-fn `api/eledger 1)))
+        ))))
