@@ -10,8 +10,9 @@
 
 (defn journal
   "Takes a coll of transactions and returns a ledger journal"
-  [transactions]
-  (journal/anti-corrupt transactions))
+  ([transactions] (journal transactions {}))
+  ([transactions options]
+   (journal/anti-corrupt transactions options)))
 
 (def default-output-fields
   "Default EDN output fields"
@@ -41,7 +42,7 @@
    (let [{:keys [::eledger/ledger-options ::eledger/output-fields]} options
          ledger-options    (or ledger-options [])
          output-fields     (or output-fields default-output-fields)
-         journal           (journal transactions)
+         journal           (journal transactions (select-keys options [::eledger/prices]))
          csv-format        (str "#eledger/line-item {" (str/join " " (into [] cat output-fields)) "}\n")
          command           (case command
                              ::eledger/edn-register {::eledger/command           command

@@ -20,8 +20,18 @@
                                              ::eledger/amount  "USD 1336"}
                                             {::eledger/account "Expenses:Commissions"
                                              ::eledger/amount  "USD 1"}
-                                            {::eledger/account :assets/checking}]}])
+                                            {::eledger/account :assets/checking}]}]
+                      {::eledger/prices [{::eledger/date      "2019-01-01"
+                                          ::eledger/commodity "R$"
+                                          ::eledger/price     "€ 0.25"}
+                                         {::eledger/date      "2019-01-01"
+                                          ::eledger/commodity "$"
+                                          ::eledger/price     "€ 0.9"}]})
          (str/triml "
+P 2019-01-01 R$ € 0.25
+P 2019-01-01 $ € 0.9
+
+
 2019-06-01 (960e3e3d-1d5d-45d9-aa92-50f7bfcd2efc) Mister Shawarma
   ~:expenses/food  R$ 20
   ~:assets/cash

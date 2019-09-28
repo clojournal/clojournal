@@ -86,8 +86,13 @@
                                                                    ::eledger/amount  "$ 1"}
                                                                   {::eledger/account :assets/checking}]}]
                                             ::eledger/edn-register
-                                            {::eledger/ledger-options {:exchange "€"
-                                                                       :price-db "/Users/pepijn/boekhouding/prices.txt"}}))
+                                            {::eledger/prices         [{::eledger/date      "2019-01-01"
+                                                                        ::eledger/commodity "R$"
+                                                                        ::eledger/price     "€ 0.25"}
+                                                                       {::eledger/date      "2019-01-01"
+                                                                        ::eledger/commodity "$"
+                                                                        ::eledger/price     "€ 0.9"}]
+                                             ::eledger/ledger-options {:exchange "€"}}))
          [#:nl.epij.eledger.line-item{:account               :expenses/food
                                       :amount                #:nl.epij.eledger.monetary-amount{:commodity "R$"
                                                                                                :value     "20"}
@@ -95,7 +100,7 @@
                                       :date                  #time/date "2019-06-01"
                                       :exchange              "€"
                                       :exchange-amount       #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "4.550171"}
+                                                                                               :value     "5"}
                                       :exchange-total-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
                                                                                                :value     "5"}
                                       :payee                 "Mister Shawarma"
@@ -107,7 +112,7 @@
                                       :date                  #time/date "2019-06-01"
                                       :exchange              "€"
                                       :exchange-amount       #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "-4.550171"}
+                                                                                               :value     "-5"}
                                       :exchange-total-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
                                                                                                :value     "0"}
                                       :payee                 "Mister Shawarma"
@@ -119,9 +124,9 @@
                                       :date                  #time/date "2019-07-01"
                                       :exchange              "€"
                                       :exchange-amount       #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "1183.656329"}
+                                                                                               :value     "1202.4"}
                                       :exchange-total-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "1184"}
+                                                                                               :value     "1202"}
                                       :payee                 :foo.bar.payee/interactive-brokers}
           #:nl.epij.eledger.line-item{:account               "Expenses:Commissions"
                                       :amount                #:nl.epij.eledger.monetary-amount{:commodity "$"
@@ -130,9 +135,9 @@
                                       :date                  #time/date "2019-07-01"
                                       :exchange              "€"
                                       :exchange-amount       #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "0.88597"}
+                                                                                               :value     "0.9"}
                                       :exchange-total-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                               :value     "1185"}
+                                                                                               :value     "1203"}
                                       :payee                 :foo.bar.payee/interactive-brokers}
           #:nl.epij.eledger.line-item{:account         :assets/checking
                                       :amount          #:nl.epij.eledger.monetary-amount{:commodity "$"
@@ -141,5 +146,5 @@
                                       :date            #time/date "2019-07-01"
                                       :exchange        "€"
                                       :exchange-amount #:nl.epij.eledger.monetary-amount{:commodity "€"
-                                                                                         :value     "-1184.542299"}
+                                                                                         :value     "-1203.3"}
                                       :payee           :foo.bar.payee/interactive-brokers}])))
