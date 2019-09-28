@@ -7,7 +7,9 @@
             [nl.epij.eledger.account :as account]
             [nl.epij.eledger.monetary-amount :as monetary-amount]
             [nl.epij.eledger.line-item :as line-item]
-            [nl.epij.eledger :as eledger]))
+            [nl.epij.eledger :as eledger]
+            [cognitect.transit :as transit])
+  (:import [java.io ByteArrayInputStream ByteArrayOutputStream]))
 
 (def special-payees {"Commodities revalued" ::payee/commodities-revalued
                      "<Unspecified payee>"  ::payee/unspecified-payee})
@@ -17,10 +19,8 @@
 
 (defn str-or-keyword
   [x]
-  (let [value (edn/read-string x)]
-    (cond
-      (keyword? value) value
-      :else (str x))))
+  (let [stream (ByteArrayInputStream. (.getBytes (pr-str x)))]
+    (transit/read (transit/reader stream :json))))
 
 (def readers
   {'time/date         t/parse

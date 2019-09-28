@@ -77,10 +77,20 @@
 
   (gen/sample (s/gen ::eledger/transactions) 1)
 
-  (::eledger/line-items (eledger (first (gen/sample (s/gen ::eledger/transactions) 1))
-                                 ::eledger/edn-register
-                                 {::eledger/ledger-options {:price-db "/tmp/prices.txt"
-                                                            :exchange "€"}}))
+  (::eledger/line-items (eledger [{::eledger/date           "2019-06-01"
+                                   ::eledger/transaction-id #uuid "960e3e3d-1d5d-45d9-aa92-50f7bfcd2efc"
+                                   ::eledger/payee          "Mister Shawarma"
+                                   ::eledger/postings       [{::eledger/account :expenses/food
+                                                              ::eledger/amount  "R$ 20"}
+                                                             {::eledger/account :assets/cash}]}
+                                  {::eledger/date     #time/date "2019-07-01"
+                                   ::eledger/payee    "Interactive Brokers"
+                                   ::eledger/postings [{::eledger/account :assets/stocks
+                                                        ::eledger/amount  "USD 1336"}
+                                                       {::eledger/account :expenses/commissions
+                                                        ::eledger/amount  "USD 1"}
+                                                       {::eledger/account :assets/checking}]}]
+                                 ::eledger/edn-register))
 
   (s/exercise-fn `eledger 1)
 

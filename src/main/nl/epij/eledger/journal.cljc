@@ -2,14 +2,6 @@
   (:require [nl.epij.eledger :as ledger]
             [clojure.string :as str]))
 
-(defn account->ledger-account
-  [account]
-  (-> account
-      str
-      (str/replace-first ":" "")
-      (str/replace "/" ":")
-      (str/replace "." ":")))
-
 (defn anti-corrupt
   [transactions]
   (let [all (for [transaction transactions
@@ -23,11 +15,18 @@
                                                            ::ledger/balance
                                                            ::ledger/memo]} posting
                                                    memo              (if memo (str "  ;" memo "\n") "")
-                                                   account           account #_(account->ledger-account account)
+                                                   account           (cond
+                                                                       (keyword? account) (str "~" account)
+                                                                       :else account)
                                                    balance-assertion (if balance
-                                                                       (str "= " balance)
+                                                                       (str " = " balance)
                                                                        "")]]
-                                         (str memo "  " account "  " amount " " balance-assertion "\n"))
+                                         (apply str (concat [memo "  " account]
+                                                            (if amount ["  " amount] [])
+                                                            [balance-assertion "\n"])))
+                        payee          (cond
+                                         (keyword? payee) (str "~" payee)
+                                         :else payee)
                         memo           (if memo (str "  ;" memo) "")]]
               (str/join (conj tx-postings (str date transaction-id " " payee memo "\n"))))]
     (str/join "\n" all)))

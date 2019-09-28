@@ -18,16 +18,16 @@
                         ::eledger/payee    "Interactive Brokers"
                         ::eledger/postings [{::eledger/account :assets/stocks
                                              ::eledger/amount  "USD 1336"}
-                                            {::eledger/account :expenses/commissions
+                                            {::eledger/account "Expenses:Commissions"
                                              ::eledger/amount  "USD 1"}
                                             {::eledger/account :assets/checking}]}])
-         (str/ltrim "
+         (str/triml "
 2019-06-01 (960e3e3d-1d5d-45d9-aa92-50f7bfcd2efc) Mister Shawarma
-  :expenses/food  R$ 20
-  :assets/cash
+  ~:expenses/food  R$ 20
+  ~:assets/cash
 
 2019-07-01 Interactive Brokers
-  :assets/stocks  USD 1336
-  :expenses/commissions  USD 1
-  :assets/checking
+  ~:assets/stocks  USD 1336
+  Expenses:Commissions  USD 1
+  ~:assets/checking
 "))))
