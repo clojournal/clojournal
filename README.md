@@ -1,5 +1,6 @@
 # eledger [![CircleCI](https://circleci.com/gh/pepijn/eledger.svg?style=svg&circle-token=27f5ba848e50cda482c8b46f5a6835ff571ba9f3)](https://circleci.com/gh/pepijn/eledger)
-Ledger CLI wrapper that supports EDN input and output
+
+Ledger CLI wrapper that supports EDN input and output. Useful for those who want to benefit from both Ledger's power and EDN's flexibility. This library enables you to interact with ledger using EDN collections as input and output–--no need to format journal files and parse CSV.
 
 ## Installation
 
