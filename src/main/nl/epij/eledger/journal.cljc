@@ -23,7 +23,7 @@
                                                            ::ledger/balance
                                                            ::ledger/memo]} posting
                                                    memo              (if memo (str "  ;" memo "\n") "")
-                                                   account           (account->ledger-account account)
+                                                   account           account #_(account->ledger-account account)
                                                    balance-assertion (if balance
                                                                        (str "= " balance)
                                                                        "")]]
