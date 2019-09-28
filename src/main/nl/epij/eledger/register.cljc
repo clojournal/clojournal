@@ -33,7 +33,5 @@
   [output-key]
   (fn [ledger-result]
     (let [{:keys [::eledger/output]} ledger-result
-          line-items (->> output
-                          (str/split-lines)
-                          (map (partial edn/read-string {:readers readers})))]
+          line-items (edn/read-string {:readers readers} (str "[" output "]"))]
       (assoc ledger-result output-key line-items))))
