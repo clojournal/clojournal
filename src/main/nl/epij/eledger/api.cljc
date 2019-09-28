@@ -5,6 +5,7 @@
             [clojure.spec.alpha :as s]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
+            [clojure.spec.test.alpha :as stest]
             [nl.epij.eledger.register :as register]))
 
 (defn journal
@@ -14,19 +15,19 @@
 
 (def default-output-fields
   "Default EDN output fields"
-  {::eledger/date                  "#time/date %(quoted(format_date(date)))"
-   ::eledger/transaction-id        "%(quoted(code))"
-   ::eledger/payee                 "#eledger/payee %(quoted(payee))"
-   ::eledger/account               "#eledger/account %(quoted(display_account))"
-   ::eledger/memo                  "%(quoted(note))"
-   ::eledger/transaction-memo      "%(quoted(xact.note))"
+  {::register/date                  "#time/date %(quoted(format_date(date)))"
+   ::register/transaction-id        "%(quoted(code))"
+   ::register/payee                 "#eledger/payee %(quoted(payee))"
+   ::register/account               "#eledger/account %(quoted(display_account))"
+   ::register/memo                  "%(quoted(note))"
+   ::register/transaction-memo      "%(quoted(xact.note))"
 
-   ::eledger/commodity             "%(quoted(commodity))"
-   ::eledger/amount                "\"%(post.commodity) %(quantity(parent.amount))\""
+   ::register/commodity             "%(quoted(commodity))"
+   ::register/amount                "\"%(post.commodity) %(quantity(parent.amount))\""
 
-   ::eledger/exchange              "%(quoted(exchange))"
-   ::eledger/exchange-amount       "\"%(commodity(display_amount)) %(quantity(scrub(display_amount)))\""
-   ::eledger/exchange-total-amount "%(quoted(display_total))"})
+   ::register/exchange              "%(quoted(exchange))"
+   ::register/exchange-amount       "\"%(commodity(display_amount)) %(quantity(scrub(display_amount)))\""
+   ::register/exchange-total-amount "%(quoted(display_total))"})
 
 (defn eledger
   "Takes a coll of transactions, a command, and (optionally) options
@@ -64,15 +65,30 @@
          transformation-fn (get command ::eledger/transformation-fn)]
      (transformation-fn output))))
 
+(s/fdef eledger
+        :args (s/cat :transactions ::eledger/transactions
+                     :command (s/with-gen keyword? #(gen/return ::eledger/edn-register))
+                     :options (s/with-gen map? #(gen/return {})))
+        :ret (s/keys :req [::eledger/line-items]))
 
 (comment
 
+  (set! *print-length* 20)
+
+  (gen/sample (s/gen ::eledger/transactions) 1)
+
+  (::eledger/line-items (eledger (first (gen/sample (s/gen ::eledger/transactions) 1))
+                                 ::eledger/edn-register
+                                 {::eledger/ledger-options {:price-db "/tmp/prices.txt"
+                                                            :exchange "€"}}))
+
+  (stest/instrument `eledger)
+
+  (s/exercise-fn `eledger 1)
+
   (eledger (gen/sample (s/gen ::eledger/transaction)) "bal")
 
-  (eledger (gen/sample (s/gen ::eledger/transaction))
-           ::eledger/edn-register
-           {::eledger/ledger-options {:price-db "/tmp/prices.txt"
-                                      :exchange "€"}})
+
 
   (journal (gen/sample (s/gen ::eledger/transaction)))
 

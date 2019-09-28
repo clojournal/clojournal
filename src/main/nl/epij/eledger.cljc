@@ -2,16 +2,27 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as gen]
             [tick.alpha.api :as t]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [nl.epij.eledger.monetary-amount :as monetary-amount]
+            [nl.epij.eledger.register :as register]))
 
-(s/def ::date (s/with-gen string?
-                          #(gen/fmap
-                             (fn [inst]
-                               (let [d (t/date inst)]
-                                 (when (and (t/> d (t/date "1400-01-01"))
-                                            (t/< d (t/date "9999-01-01")))
-                                   (.format (java.text.SimpleDateFormat. "yyyy-MM-dd") inst))))
-                             (s/gen inst?))))
+
+(s/def ::date (s/or :date (s/with-gen #(= (type %) java.time.LocalDate)
+                                      #(gen/fmap
+                                         (fn [inst]
+                                           (let [d (t/date inst)]
+                                             (when (and (t/> d (t/date "1400-01-01"))
+                                                        (t/< d (t/date "9999-01-01")))
+                                               d)))
+                                         (s/gen inst?)))
+                    :string (s/with-gen string?
+                                        #(gen/fmap
+                                           (fn [inst]
+                                             (let [d (t/date inst)]
+                                               (when (and (t/> d (t/date "1400-01-01"))
+                                                          (t/< d (t/date "9999-01-01")))
+                                                 (.format (java.text.SimpleDateFormat. "yyyy-MM-dd") inst))))
+                                           (s/gen inst?)))))
 
 (s/def ::non-blank-string (s/and string? (comp not str/blank?)))
 
@@ -49,7 +60,7 @@
                                ::amount
                                ::memo]))
 
-(s/def ::postings (s/with-gen (s/coll-of ::posting)
+(s/def ::postings (s/with-gen (s/coll-of ::posting :gen-max 2)
                               #(gen/fmap
                                  (fn [postings]
                                    (let [[first-post & rem-post] postings]
@@ -66,6 +77,47 @@
                                    ::postings
                                    ::payee]))
 
-(s/def ::transactions (s/coll-of ::transaction))
+(s/def ::transactions (s/coll-of ::transaction :gen-max 20))
 
 (s/def ::exit #(= 0 %))
+
+(s/def ::commodity string?)
+(s/def ::exchange ::commodity)
+
+(s/def ::monetary-amount/commodity ::commodity)
+(s/def ::monetary-amount/value string?)
+
+(s/def ::monetary-amount (s/keys :req [::monetary-amount/value]
+                                 :opt [::monetary-amount/commodity]))
+
+(s/def ::register/date ::date)
+(s/def ::register/account ::account)
+(s/def ::register/payee ::payee)
+(s/def ::register/commodity ::commodity)
+(s/def ::register/exchange ::exchange)
+(s/def ::register/amount ::monetary-amount)
+(s/def ::register/exchange-amount ::monetary-amount)
+(s/def ::register/exchange-total-amount ::monetary-amount)
+(s/def ::register/memo ::memo)
+(s/def ::register/transaction-id ::transaction-id)
+
+(s/def ::line-item (s/keys :req [::register/date
+                                 ::register/account
+                                 ::register/payee
+
+                                 ::register/commodity
+                                 ::register/amount
+
+                                 ::register/exchange-amount
+                                 ::register/exchange-total-amount]
+                           :opt [::register/transaction-id
+                                 ::register/memo
+                                 ::register/exchange]))
+
+(s/def ::line-items (s/coll-of ::line-item))
+
+(comment
+
+  (s/exercise ::line-item)
+
+  )
