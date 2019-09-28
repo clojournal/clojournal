@@ -23,7 +23,6 @@
   {'time/date         t/parse
    'eledger/date      str
    ;;'ledger/commodity (comp ::local-currency/id local-currency/abbreviation->currency)
-   'eledger/amount    (fn [amt] (last (str/split amt #" ")))
    'eledger/payee     (comp special-payees str-or-keyword)
    'eledger/account   (comp special-accounts str-or-keyword)
    'eledger/line-item (fn [line-item] (->> line-item

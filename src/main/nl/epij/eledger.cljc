@@ -29,7 +29,7 @@
 
 (s/def ::amount (s/with-gen (s/and string? some?)
                             (fn [] (gen/fmap
-                                     (fn [[amt decimals]] (str "EUR " (format (str "%." decimals "f") amt)))
+                                     (fn [[amt decimals]] (str "R$ " (format (str "%." decimals "f") amt)))
                                      (gen/tuple (s/gen ::acceptable-amount)
                                                 (gen/large-integer* {:min 0 :max 10}))))))
 
