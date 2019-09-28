@@ -31,7 +31,7 @@ jobs:
             - v1-dependencies-
 
       # run tests!
-      - run: bin/koacha
+      - run: bin/kaocha
 
       - save_cache:
           paths:
