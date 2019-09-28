@@ -85,7 +85,7 @@
 (s/def ::exchange ::commodity)
 
 (s/def ::monetary-amount/commodity ::commodity)
-(s/def ::monetary-amount/value string?)
+(s/def ::monetary-amount/value (s/and string? #(re-matches #"[-]?[0-9]+(\.[0-9]+)?" %)))
 
 (s/def ::monetary-amount (s/keys :req [::monetary-amount/value]
                                  :opt [::monetary-amount/commodity]))
@@ -106,13 +106,13 @@
                                  ::line-item/payee
 
                                  ::line-item/commodity
-                                 ::line-item/amount
-
-                                 ::line-item/exchange-amount
-                                 ::line-item/exchange-total-amount]
+                                 ::line-item/amount]
                            :opt [::line-item/transaction-id
                                  ::line-item/memo
-                                 ::line-item/exchange]))
+
+                                 ::line-item/exchange
+                                 ::line-item/exchange-amount
+                                 ::line-item/exchange-total-amount]))
 
 (s/def ::line-items (s/coll-of ::line-item))
 

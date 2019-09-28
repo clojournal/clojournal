@@ -27,7 +27,7 @@
 
    ::line-item/exchange              "%(quoted(exchange))"
    ::line-item/exchange-amount       "\"%(commodity(display_amount)) %(quantity(scrub(display_amount)))\""
-   ::line-item/exchange-total-amount "%(quoted(display_total))"})
+   ::line-item/exchange-total-amount "%(quoted(display_total | 0))"})
 
 (defn eledger
   "Takes a coll of transactions, a command, and (optionally) options

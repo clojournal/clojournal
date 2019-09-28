@@ -27,28 +27,29 @@
    'eledger/payee     (comp (fn [payee] (get special-payees payee payee)) str-or-keyword)
    'eledger/account   (comp (fn [account] (get special-accounts account account)) str-or-keyword)
    'eledger/line-item (fn [line-item]
-                        (let [line-item (->> line-item
-                                             (into {} (remove (comp str/blank? str second))))
-                              {:keys [::line-item/commodity ::line-item/exchange]} line-item]
-                          (-> line-item
-                              (update ::line-item/amount
-                                      (fn [amt]
-                                        (if commodity
-                                          {::monetary-amount/commodity commodity
-                                           ::monetary-amount/value     (-> amt (str/replace commodity "") str/trim)}
-                                          {::monetary-amount/value (str/trim amt)})))
-                              (update ::line-item/exchange-amount
-                                      (fn [amt]
-                                        (if exchange
-                                          {::monetary-amount/commodity exchange
-                                           ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)}
-                                          {::monetary-amount/value (str/trim amt)})))
-                              (update ::line-item/exchange-total-amount
-                                      (fn [amt]
-                                        (if exchange
-                                          {::monetary-amount/commodity exchange
-                                           ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)}
-                                          {::monetary-amount/value (str/trim amt)}))))))})
+                        (let [{:keys [::line-item/commodity ::line-item/exchange]} line-item
+                              exchange  (when-not (str/blank? exchange) exchange)
+                              commodity (when-not (str/blank? commodity) commodity)]
+                          (into {}
+                                (remove (fn [field] (or (-> field second str str/blank?)
+                                                        (-> field second nil?))))
+                                (-> line-item
+                                    (update ::line-item/amount
+                                            (fn [amt]
+                                              (if commodity
+                                                {::monetary-amount/commodity commodity
+                                                 ::monetary-amount/value     (-> amt (str/replace commodity "") str/trim)}
+                                                {::monetary-amount/value (str/trim amt)})))
+                                    (update ::line-item/exchange-amount
+                                            (fn [amt]
+                                              (when exchange
+                                                {::monetary-amount/commodity exchange
+                                                 ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)})))
+                                    (update ::line-item/exchange-total-amount
+                                            (fn [amt]
+                                              (when (and exchange amt)
+                                                {::monetary-amount/commodity exchange
+                                                 ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)})))))))})
 
 (defn parse
   [output-key]
