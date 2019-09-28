@@ -5,7 +5,9 @@
             [tick.alpha.api :as t]
             [nl.epij.eledger.payee :as payee]
             [nl.epij.eledger.account :as account]
-            [nl.epij.eledger.monetary-amount :as monetary-amount]))
+            [nl.epij.eledger.monetary-amount :as monetary-amount]
+            [nl.epij.eledger.line-item :as line-item]
+            [nl.epij.eledger :as eledger]))
 
 (def special-payees {"Commodities revalued" ::payee/commodities-revalued
                      "<Unspecified payee>"  ::payee/unspecified-payee})
@@ -29,21 +31,21 @@
    'eledger/line-item (fn [line-item]
                         (let [line-item (->> line-item
                                              (into {} (remove (comp str/blank? str second))))
-                              {:keys [::commodity ::exchange]} line-item]
+                              {:keys [::line-item/commodity ::line-item/exchange]} line-item]
                           (-> line-item
-                              (update ::amount
+                              (update ::line-item/amount
                                       (fn [amt]
                                         (if commodity
                                           {::monetary-amount/commodity commodity
                                            ::monetary-amount/value     (-> amt (str/replace commodity "") str/trim)}
                                           {::monetary-amount/value amt})))
-                              (update ::exchange-amount
+                              (update ::line-item/exchange-amount
                                       (fn [amt]
                                         (if exchange
                                           {::monetary-amount/commodity exchange
                                            ::monetary-amount/value     (-> amt (str/replace exchange "") str/trim)}
                                           {::monetary-amount/value amt})))
-                              (update ::exchange-total-amount
+                              (update ::line-item/exchange-total-amount
                                       (fn [amt]
                                         (if exchange
                                           {::monetary-amount/commodity exchange
@@ -53,6 +55,6 @@
 (defn parse
   [output-key]
   (fn [ledger-result]
-    (let [{:keys [:nl.epij.eledger/output]} ledger-result
+    (let [{:keys [::eledger/output]} ledger-result
           line-items (when output (edn/read-string {:readers readers} (str "[" output "]")))]
       (assoc ledger-result output-key line-items))))

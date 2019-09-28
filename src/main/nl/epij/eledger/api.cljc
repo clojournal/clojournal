@@ -5,8 +5,8 @@
             [clojure.spec.alpha :as s]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
-            [clojure.spec.test.alpha :as stest]
-            [nl.epij.eledger.register :as register]))
+            [nl.epij.eledger.register :as register]
+            [nl.epij.eledger.line-item :as line-item]))
 
 (defn journal
   "Takes a coll of transactions and returns a ledger journal"
@@ -15,19 +15,19 @@
 
 (def default-output-fields
   "Default EDN output fields"
-  {::register/date                  "#time/date %(quoted(format_date(date)))"
-   ::register/transaction-id        "%(quoted(code))"
-   ::register/payee                 "#eledger/payee %(quoted(payee))"
-   ::register/account               "#eledger/account %(quoted(display_account))"
-   ::register/memo                  "%(quoted(note))"
-   ::register/transaction-memo      "%(quoted(xact.note))"
+  {::line-item/date                  "#time/date %(quoted(format_date(date)))"
+   ::line-item/transaction-id        "%(quoted(code))"
+   ::line-item/payee                 "#eledger/payee %(quoted(payee))"
+   ::line-item/account               "#eledger/account %(quoted(display_account))"
+   ::line-item/memo                  "%(quoted(note))"
+   ::line-item/transaction-memo      "%(quoted(xact.note))"
 
-   ::register/commodity             "%(quoted(commodity))"
-   ::register/amount                "\"%(post.commodity) %(quantity(parent.amount))\""
+   ::line-item/commodity             "%(quoted(commodity))"
+   ::line-item/amount                "\"%(post.commodity) %(quantity(parent.amount))\""
 
-   ::register/exchange              "%(quoted(exchange))"
-   ::register/exchange-amount       "\"%(commodity(display_amount)) %(quantity(scrub(display_amount)))\""
-   ::register/exchange-total-amount "%(quoted(display_total))"})
+   ::line-item/exchange              "%(quoted(exchange))"
+   ::line-item/exchange-amount       "\"%(commodity(display_amount)) %(quantity(scrub(display_amount)))\""
+   ::line-item/exchange-total-amount "%(quoted(display_total))"})
 
 (defn eledger
   "Takes a coll of transactions, a command, and (optionally) options
@@ -81,8 +81,6 @@
                                  ::eledger/edn-register
                                  {::eledger/ledger-options {:price-db "/tmp/prices.txt"
                                                             :exchange "€"}}))
-
-  (stest/instrument `eledger)
 
   (s/exercise-fn `eledger 1)
 

@@ -4,7 +4,7 @@
             [tick.alpha.api :as t]
             [clojure.string :as str]
             [nl.epij.eledger.monetary-amount :as monetary-amount]
-            [nl.epij.eledger.register :as register]))
+            [nl.epij.eledger.line-item :as line-item]))
 
 
 (s/def ::date (s/or :date (s/with-gen #(= (type %) java.time.LocalDate)
@@ -90,29 +90,29 @@
 (s/def ::monetary-amount (s/keys :req [::monetary-amount/value]
                                  :opt [::monetary-amount/commodity]))
 
-(s/def ::register/date ::date)
-(s/def ::register/account ::account)
-(s/def ::register/payee ::payee)
-(s/def ::register/commodity ::commodity)
-(s/def ::register/exchange ::exchange)
-(s/def ::register/amount ::monetary-amount)
-(s/def ::register/exchange-amount ::monetary-amount)
-(s/def ::register/exchange-total-amount ::monetary-amount)
-(s/def ::register/memo ::memo)
-(s/def ::register/transaction-id ::transaction-id)
+(s/def ::line-item/date ::date)
+(s/def ::line-item/account ::account)
+(s/def ::line-item/payee ::payee)
+(s/def ::line-item/commodity ::commodity)
+(s/def ::line-item/exchange ::exchange)
+(s/def ::line-item/amount ::monetary-amount)
+(s/def ::line-item/exchange-amount ::monetary-amount)
+(s/def ::line-item/exchange-total-amount ::monetary-amount)
+(s/def ::line-item/memo ::memo)
+(s/def ::line-item/transaction-id ::transaction-id)
 
-(s/def ::line-item (s/keys :req [::register/date
-                                 ::register/account
-                                 ::register/payee
+(s/def ::line-item (s/keys :req [::line-item/date
+                                 ::line-item/account
+                                 ::line-item/payee
 
-                                 ::register/commodity
-                                 ::register/amount
+                                 ::line-item/commodity
+                                 ::line-item/amount
 
-                                 ::register/exchange-amount
-                                 ::register/exchange-total-amount]
-                           :opt [::register/transaction-id
-                                 ::register/memo
-                                 ::register/exchange]))
+                                 ::line-item/exchange-amount
+                                 ::line-item/exchange-total-amount]
+                           :opt [::line-item/transaction-id
+                                 ::line-item/memo
+                                 ::line-item/exchange]))
 
 (s/def ::line-items (s/coll-of ::line-item))
 
