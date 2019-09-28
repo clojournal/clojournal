@@ -29,7 +29,7 @@
    ::eledger/exchange-total-amount "%(quoted(display_total))"})
 
 (defn eledger
-  "Takes a coll of transactions, a command, and ledger CLI arguments
+  "Takes a coll of transactions, a command, and (optionally) options
 
   command can either be:
   - The keyword ::eledger/edn-register which outputs an EDN register
@@ -65,10 +65,7 @@
 
 (comment
 
-  (eledger (gen/sample (s/gen ::eledger/transaction))
-           "bal"
-           {::eledger/ledger-options {:price-db "/tmp/prices.txt"
-                                      :exchange "€"}})
+  (eledger (gen/sample (s/gen ::eledger/transaction)) "bal")
 
   (eledger (gen/sample (s/gen ::eledger/transaction))
            ::eledger/edn-register
