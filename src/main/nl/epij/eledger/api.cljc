@@ -36,9 +36,9 @@
   command can either be:
   - The keyword ::eledger/edn-register which outputs an EDN register
   - Any string which is passed to ledger CLI verbatim (like register, balance, bal, etc.)"
-  ([transactions command]
-   (eledger transactions command {}))
-  ([transactions command options]
+  ([transactions command query]
+   (eledger transactions query command {}))
+  ([transactions command query options]
    (let [{:keys [::eledger/ledger-options ::eledger/output-fields]} options
          ledger-options    (or ledger-options [])
          output-fields     (or output-fields default-output-fields)
@@ -56,8 +56,9 @@
          ledger-env        (merge {"LEDGER_FILE" "-"} (get command ::eledger/env))
          ledger-args       (concat ["ledger"]
                                    (mapcat #(vector (str "--" (name (first %))) (second %)) ledger-options)
-                                   [(get command ::eledger/ledger-command)
-                                    :in journal
+                                   [(get command ::eledger/ledger-command)]
+                                   query
+                                   [:in journal
                                     :env ledger-env])
          sh-result         (apply shell/sh ledger-args)
          output            (case (get sh-result :exit)
