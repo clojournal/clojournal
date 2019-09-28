@@ -29,7 +29,11 @@
    ::eledger/exchange-total-amount "%(quoted(display_total))"})
 
 (defn eledger
-  "Takes a coll of transactions and ledger CLI arguments and returns its output (verbatim or EDN)"
+  "Takes a coll of transactions, a command, and ledger CLI arguments
+
+  command can either be:
+  - The keyword ::eledger/edn-register which outputs an EDN register
+  - Any string which is passed to ledger CLI verbatim (like register, balance, bal, etc.)"
   ([transactions command]
    (eledger transactions command {}))
   ([transactions command options]
