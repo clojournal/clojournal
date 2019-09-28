@@ -43,29 +43,24 @@
          journal        (journal transactions)
          csv-format     (str "#eledger/line-item {" (str/join " " (into [] cat output-fields)) "}\n")
          command        (case command
-                          ::eledger/edn-register {::eledger/command  command
-                                                  ::eledger/parse-fn register/parse}
+                          ::eledger/edn-register {::eledger/command        command
+                                                  ::eledger/ledger-command "csv"
+                                                  ::eledger/parse-fn       register/parse
+                                                  ::eledger/env            {"LEDGER_CSV_FORMAT"  csv-format
+                                                                            "LEDGER_DATE_FORMAT" "%Y-%m-%d"}}
                           {::eledger/command        ::eledger/ledger-command
                            ::eledger/ledger-command command
                            ::eledger/parse-fn       identity})
-         cmd-result     (apply shell/sh
-                               (case (get command ::eledger/command)
-                                 ::eledger/edn-register (concat ["ledger"]
-                                                                (mapcat #(vector (str "--" (name (first %))) (second %)) ledger-options)
-                                                                ["csv"
-                                                                 :in journal
-                                                                 :env {"LEDGER_FILE"        "-"
-                                                                       "LEDGER_CSV_FORMAT"  csv-format
-                                                                       "LEDGER_DATE_FORMAT" "%Y-%m-%d"}])
-                                 ::eledger/ledger-command (concat ["ledger"]
-                                                                  (mapcat #(vector (str "--" (name (first %))) (second %)) ledger-options)
-                                                                  [(get command ::eledger/ledger-command)
-                                                                   :in journal
-                                                                   :env {"LEDGER_FILE" "-"}])))
+         ledger-args    (concat ["ledger"]
+                                (mapcat #(vector (str "--" (name (first %))) (second %)) ledger-options)
+                                [(get command ::eledger/ledger-command)
+                                 :in journal
+                                 :env (merge {"LEDGER_FILE" "-"} (get command ::eledger/env))])
+         cmd-result     (apply shell/sh ledger-args)
          output         (case (get cmd-result :exit)
                           0 {::eledger/output (get cmd-result :out)}
                           {::eledger/error (get cmd-result :err)})]
-     ((get command ::eledger/parse-fn) (some-> output ::eledger/output)))))
+     (update output ::eledger/output (get command ::eledger/parse-fn)))))
 
 
 (comment
