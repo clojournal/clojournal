@@ -20,16 +20,19 @@ It takes a collection of transactions, a command and options:
 Pass a collection like this:
 
 ```clojure
-[#:nl.epij.eledger{:date "2019-06-01",
-                   :transaction-id #uuid "960e3e3d-1d5d-45d9-aa92-50f7bfcd2efc",
-                   :payee "Mister Shawarma",
-                   :postings [#:nl.epij.eledger{:account :expenses/food, :amount "R$ 20"}
-                              #:nl.epij.eledger{:account :assets/cash}]}
- #:nl.epij.eledger{:date #time/date "2019-07-01",
-                   :payee "Interactive Brokers",
-                   :postings [#:nl.epij.eledger{:account :assets/stocks, :amount "USD 1336"}
-                              #:nl.epij.eledger{:account :expenses/commissions, :amount "USD 1"}
-                              #:nl.epij.eledger{:account :assets/checking}]}]
+[{::eledger/date           "2019-06-01"
+  ::eledger/transaction-id #uuid "960e3e3d-1d5d-45d9-aa92-50f7bfcd2efc"
+  ::eledger/payee          "Mister Shawarma"
+  ::eledger/postings       [{::eledger/account :expenses/food
+                             ::eledger/amount  "R$ 20"}
+                            {::eledger/account :assets/cash}]}
+ {::eledger/date     #time/date "2019-07-01"
+  ::eledger/payee    "Interactive Brokers"
+  ::eledger/postings [{::eledger/account :assets/stocks
+                       ::eledger/amount  "USD 1336"}
+                      {::eledger/account :expenses/commissions
+                       ::eledger/amount  "USD 1"}
+                      {::eledger/account :assets/checking}]}]
 ```
 
 ### `command`
