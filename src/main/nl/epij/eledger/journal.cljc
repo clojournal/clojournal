@@ -10,9 +10,17 @@
                       :let [{:keys [::eledger/date ::eledger/commodity ::eledger/price]} price]]
                   (str "P " date " " commodity " " price))
          all    (for [transaction transactions
-                      :let [{:keys [::eledger/date ::eledger/transaction-id ::eledger/payee ::eledger/memo ::eledger/postings]} transaction
+                      :let [{:keys [::eledger/date
+                                    ::eledger/transaction-id
+                                    ::eledger/payee
+                                    ::eledger/memo
+                                    ::eledger/postings
+                                    ::eledger/status]} transaction
                             transaction-id (if transaction-id
                                              (str " (" transaction-id ")")
+                                             "")
+                            status         (case status
+                                             ::eledger/cleared " *"
                                              "")
                             tx-postings    (for [posting postings
                                                  :let [{:keys [::eledger/account
@@ -33,5 +41,5 @@
                                              (keyword? payee) (str "~" payee)
                                              :else payee)
                             memo           (if memo (str "  ;" memo) "")]]
-                  (str/join (conj tx-postings (str date transaction-id " " payee memo "\n"))))]
+                  (str/join (conj tx-postings (str date status transaction-id " " payee memo "\n"))))]
      (str/join "\n" (concat prices ["\n"] all)))))
