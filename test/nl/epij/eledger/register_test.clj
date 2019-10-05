@@ -6,7 +6,7 @@
             [clojure.spec.alpha :as s]
             [nl.epij.eledger :as eledger]))
 
-(stest/instrument `api/eledger)
+#_(stest/instrument `api/eledger)
 
 (deftest register-parsing
   (let [results (stest/check [`api/eledger] #_{:clojure.spec.test.check/opts {:num-tests 1}})]
