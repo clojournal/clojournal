@@ -1,6 +1,17 @@
 (ns nl.epij.eledger.journal
   (:require [nl.epij.eledger :as eledger]
+            [nl.epij.eledger.virtual :as virtual]
             [clojure.string :as str]))
+
+(defn ledger-account
+  [account virtual]
+  (let [base (cond
+               (keyword? account) (str "~" account)
+               :else account)]
+    (case virtual
+      ::virtual/balanced (format "[%s]" base)
+      ::virtual/unbalanced (format "(%s)" base)
+      base)))
 
 (defn anti-corrupt
   ([transactions] (anti-corrupt transactions {}))
@@ -26,11 +37,10 @@
                                                  :let [{:keys [::eledger/account
                                                                ::eledger/amount
                                                                ::eledger/balance
-                                                               ::eledger/memo]} posting
+                                                               ::eledger/memo
+                                                               ::eledger/virtual]} posting
                                                        memo              (if memo (str "  ;" memo "\n") "")
-                                                       account           (cond
-                                                                           (keyword? account) (str "~" account)
-                                                                           :else account)
+                                                       account           (ledger-account account virtual)
                                                        balance-assertion (if balance
                                                                            (str " = " balance)
                                                                            "")]]

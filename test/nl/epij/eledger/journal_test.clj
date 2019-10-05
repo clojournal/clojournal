@@ -5,6 +5,7 @@
             [clojure.spec.gen.alpha :as gen]
             [clojure.spec.alpha :as s]
             [nl.epij.eledger :as eledger]
+            [nl.epij.eledger.virtual :as virtual]
             [clojure.string :as str]))
 
 (deftest journal-generation
@@ -41,4 +42,25 @@ P 2019-01-01 $ € 0.9
   ~:assets/stocks  USD 1336
   Expenses:Commissions  USD 1
   ~:assets/checking
-"))))
+")))
+
+  (testing "virtual postings"
+    (is (= (-> (api/journal [{::eledger/date     "2019-06-01"
+                              ::eledger/payee    "Mister Shawarma"
+                              ::eledger/postings [{::eledger/account :funds/food
+                                                   ::eledger/amount  "R$ 20"
+                                                   ::eledger/virtual ::virtual/balanced}
+                                                  {::eledger/account :assets/cash
+                                                   ::eledger/amount  "R$ -20"
+                                                   ::eledger/virtual ::virtual/balanced}
+                                                  {::eledger/account "Funds:Shawarma Time!"
+                                                   ::eledger/amount  "R$ 1337"
+                                                   ::eledger/virtual ::virtual/unbalanced}]}
+                             ])
+               str/triml)
+           (str/triml "
+2019-06-01 Mister Shawarma
+  [~:funds/food]  R$ 20
+  [~:assets/cash]  R$ -20
+  (Funds:Shawarma Time!)  R$ 1337
+")))))
