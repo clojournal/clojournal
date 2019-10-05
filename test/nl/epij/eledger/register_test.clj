@@ -38,6 +38,7 @@
                                                                    ::eledger/amount  "$ 1"}
                                                                   {::eledger/account :assets/checking}]}]
                                             ::eledger/edn-register
+                                            []
                                             {}))
          [#:nl.epij.eledger.line-item{:account        :expenses/food
                                       :amount         #:nl.epij.eledger.monetary-amount{:commodity "R$"
@@ -86,6 +87,7 @@
                                                                    ::eledger/amount  "$ 1"}
                                                                   {::eledger/account :assets/checking}]}]
                                             ::eledger/edn-register
+                                            []
                                             {::eledger/prices         [{::eledger/date      "2019-01-01"
                                                                         ::eledger/commodity "R$"
                                                                         ::eledger/price     "€ 0.25"}
