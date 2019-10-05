@@ -37,7 +37,7 @@
   - The keyword ::eledger/edn-register which outputs an EDN register
   - Any string which is passed to ledger CLI verbatim (like register, balance, bal, etc.)"
   ([transactions command query]
-   (eledger transactions query command {}))
+   (eledger transactions command query {}))
   ([transactions command query options]
    (let [{:keys [::eledger/ledger-options ::eledger/output-fields]} options
          ledger-options    (or ledger-options [])
@@ -70,6 +70,7 @@
 (s/fdef eledger
         :args (s/cat :transactions ::eledger/transactions
                      :command (s/with-gen keyword? #(gen/return ::eledger/edn-register))
+                     :query (s/with-gen (s/coll-of string?) #(gen/return []))
                      :options (s/with-gen map? #(gen/return {})))
         :ret (s/keys :req [::eledger/line-items]))
 
