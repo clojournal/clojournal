@@ -30,6 +30,14 @@
    ::line-item/exchange-amount       "\"%(commodity(display_amount)) %(quantity(scrub(display_amount)))\""
    ::line-item/exchange-total-amount "%(quoted(display_total))"})
 
+(defn csv-format
+  ([output-fields]
+   (csv-format output-fields nil))
+  ([output-fields reader-tag]
+   (format "%s{%s}\n"
+           (or (some-> reader-tag (str " ")) "")
+           (str/join " " (into [] cat output-fields)))))
+
 (defn eledger
   "Takes a coll of transactions, a command, and (optionally) options
 
@@ -43,7 +51,7 @@
          ledger-options    (or ledger-options [])
          output-fields     (or output-fields default-output-fields)
          journal           (journal transactions (select-keys options [::eledger/prices]))
-         csv-format        (str "#eledger/line-item {" (str/join " " (into [] cat output-fields)) "}\n")
+         csv-format        (csv-format output-fields "#eledger/line-item")
          command           (case command
                              ::eledger/edn-register {::eledger/command           command
                                                      ::eledger/ledger-command    "csv"
