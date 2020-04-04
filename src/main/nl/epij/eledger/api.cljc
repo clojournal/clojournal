@@ -6,7 +6,8 @@
             [clojure.java.shell :as shell]
             [clojure.string :as str]
             [nl.epij.eledger.register :as register]
-            [nl.epij.eledger.line-item :as line-item]))
+            [nl.epij.eledger.line-item :as line-item]
+            [clojure.edn :as edn]))
 
 (defn journal
   "Takes a coll of transactions and returns a ledger journal"
@@ -44,36 +45,20 @@
   command can either be:
   - The keyword ::eledger/edn-register which outputs an EDN register
   - Any string which is passed to ledger CLI verbatim (like register, balance, bal, etc.)"
-  ([transactions command query]
-   (eledger transactions command query {}))
-  ([transactions command query options]
-   (let [{:keys [::eledger/ledger-options ::eledger/output-fields]} options
-         ledger-options    (or ledger-options [])
-         output-fields     (or output-fields default-output-fields)
-         journal           (journal transactions (select-keys options [::eledger/prices]))
-         csv-format        (csv-format output-fields "#eledger/line-item")
-         command           (case command
-                             ::eledger/edn-register {::eledger/command           command
-                                                     ::eledger/ledger-command    "csv"
-                                                     ::eledger/env               {"LEDGER_CSV_FORMAT"  csv-format
-                                                                                  "LEDGER_DATE_FORMAT" "%Y-%m-%d"}
-                                                     ::eledger/transformation-fn (register/parse ::eledger/line-items)}
-                             {::eledger/command           ::eledger/ledger-command
-                              ::eledger/ledger-command    command
-                              ::eledger/transformation-fn identity})
-         ledger-env        (merge {"LEDGER_FILE" "-"} (get command ::eledger/env))
-         ledger-args       (concat ["ledger"]
-                                   (mapcat #(vector (str "--" (name (first %))) (second %)) ledger-options)
-                                   [(get command ::eledger/ledger-command)]
-                                   query
-                                   [:in journal
-                                    :env ledger-env])
-         sh-result         (apply shell/sh ledger-args)
-         output            (case (get sh-result :exit)
-                             0 {::eledger/output (get sh-result :out)}
-                             {::eledger/error (get sh-result :err)})
-         transformation-fn (get command ::eledger/transformation-fn)]
-     (transformation-fn output))))
+  [journal args]
+  (let [args'        (concat ["--file" "-"] (flatten args))
+        journal-data (.getBytes (slurp journal))
+        debug-string (format "echo %s | base64 --decode | ledger %s"
+                             (String. (.encode (java.util.Base64/getEncoder) journal-data))
+                             (str/join " " args'))
+        m            {:nl.epij.eledger.report/args         args'
+                      :nl.epij.eledger.report/debug-string debug-string}
+        ledger-args  (concat ["ledger"] args' [:in journal-data])
+        sh-result    (apply shell/sh ledger-args)
+        f            (comp edn/read-string #(format "[%s]" %))]
+    (merge m (case (get sh-result :exit)
+               0 {:nl.epij.eledger.report/output (f (get sh-result :out))}
+               {:nl.epij.eledger.report/error (get sh-result :err)}))))
 
 (s/fdef eledger
         :args (s/cat :transactions ::eledger/transactions
