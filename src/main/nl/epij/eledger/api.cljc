@@ -7,7 +7,8 @@
             [clojure.string :as str]
             [nl.epij.eledger.register :as register]
             [nl.epij.eledger.line-item :as line-item]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [clojure.java.io :as io]))
 
 (defn journal
   "Takes a coll of transactions and returns a ledger journal"
@@ -46,14 +47,17 @@
   - The keyword ::eledger/edn-register which outputs an EDN register
   - Any string which is passed to ledger CLI verbatim (like register, balance, bal, etc.)"
   [journal args]
-  (let [args'        (concat ["--file" "-"] (flatten args))
-        journal-data (.getBytes (slurp journal))
-        debug-string (format "echo %s | base64 --decode | ledger %s"
-                             (String. (.encode (java.util.Base64/getEncoder) journal-data))
-                             (str/join " " args'))
-        m            {:nl.epij.eledger.report/args         args'
-                      :nl.epij.eledger.report/debug-string debug-string}
-        ledger-args  (concat ["ledger"] args' [:in journal-data])
+  (let [journal-data (slurp journal)
+        args'        (concat ["--file" "-"] (flatten args))
+        m            {:nl.epij.eledger.report/journal journal-data
+                      :nl.epij.eledger.report/args    args'}
+        ledger-args  (concat ["ledger"]
+                             (map (fn [x]
+                                    (cond
+                                      (string? x) x
+                                      (map? x) (csv-format x)))
+                                  args')
+                             [:in journal-data])
         sh-result    (apply shell/sh ledger-args)
         f            (comp edn/read-string #(format "[%s]" %))]
     (merge m (case (get sh-result :exit)
