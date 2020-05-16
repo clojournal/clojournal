@@ -52,4 +52,4 @@
                                              :else payee)
                             memo           (if memo (str "  ;" memo) "")]]
                   (str/join (conj tx-postings (str date status transaction-id " " payee memo "\n"))))]
-     (str/join "\n" (concat prices ["\n"] all)))))
+     (str/trim (str/join "\n" (concat prices ["\n"] all))))))

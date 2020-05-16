@@ -40,14 +40,19 @@
            (or (some-> reader-tag (str " ")) "")
            (str/join " " (into [] cat output-fields)))))
 
-(defn eledger
-  "Takes a coll of transactions, a command, and (optionally) options
+(def readers {'eledger/lot (fn [x]
+                             (mapv (fn [y]
+                                     (let [[_ quantity price date] (re-matches #"(.+) \{(.+)\} \[(.+)\]" y)]
+                                       {:nl.epij.eledger.lot/quantity quantity
+                                        :nl.epij.eledger.lot/price    price
+                                        :nl.epij.eledger.lot/date     date}))
+                                   (str/split-lines x)))})
 
-  command can either be:
-  - The keyword ::eledger/edn-register which outputs an EDN register
-  - Any string which is passed to ledger CLI verbatim (like register, balance, bal, etc.)"
+(defn eledger
+  "Takes a journal and vanilla Ledger CLI arguments passed through clojure.java.shell/sh"
   [journal args]
-  (let [journal-data (slurp journal)
+  (let [journal-data (cond (string? journal) journal
+                           :else (slurp journal))
         args'        (concat ["--file" "-"] (flatten args))
         m            {:nl.epij.eledger.report/journal journal-data
                       :nl.epij.eledger.report/args    args'}
@@ -59,7 +64,7 @@
                                   args')
                              [:in journal-data])
         sh-result    (apply shell/sh ledger-args)
-        f            (comp edn/read-string #(format "[%s]" %))]
+        f            (comp (partial edn/read-string {:readers readers}) #(format "[%s]" %))]
     (merge m (case (get sh-result :exit)
                0 {:nl.epij.eledger.report/output (f (get sh-result :out))}
                {:nl.epij.eledger.report/error (get sh-result :err)}))))
