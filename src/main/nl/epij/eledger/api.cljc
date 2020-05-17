@@ -5,10 +5,8 @@
             [clojure.spec.alpha :as s]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
-            [nl.epij.eledger.register :as register]
             [nl.epij.eledger.line-item :as line-item]
-            [clojure.edn :as edn]
-            [clojure.java.io :as io]))
+            [clojure.edn :as edn]))
 
 (defn journal
   "Takes a coll of transactions and returns a ledger journal"
