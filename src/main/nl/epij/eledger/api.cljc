@@ -54,8 +54,6 @@
   (let [journal-data (cond (string? journal) journal
                            :else (slurp journal))
         args'        (concat ["--file" "-"] (flatten args))
-        m            {:nl.epij.eledger.report/journal journal-data
-                      :nl.epij.eledger.report/args    args'}
         ledger-args  (concat ["ledger"]
                              (map (fn [x]
                                     (cond
@@ -65,9 +63,9 @@
                              [:in journal-data])
         sh-result    (apply shell/sh ledger-args)
         f            (comp (partial edn/read-string {:readers readers}) #(format "[%s]" %))]
-    (merge m (case (get sh-result :exit)
-               0 {:nl.epij.eledger.report/output (f (get sh-result :out))}
-               {:nl.epij.eledger.report/error (get sh-result :err)}))))
+    (case (get sh-result :exit)
+      0 {:nl.epij.eledger.report/output (f (get sh-result :out))}
+      {:nl.epij.eledger.report/error (get sh-result :err)})))
 
 (s/fdef eledger
         :args (s/cat :transactions ::eledger/transactions
@@ -100,8 +98,6 @@
   (s/exercise-fn `eledger 1)
 
   (eledger (gen/sample (s/gen ::eledger/transaction)) "bal")
-
-
 
   (journal (gen/sample (s/gen ::eledger/transaction)))
 
