@@ -2,5 +2,6 @@
            org.clojure/test.check {:mvn/version "0.10.0"}
            tick                   {:mvn/version "0.4.17-alpha"}}
  :paths   ["src/main" "resources"]
- :aliases {:test {:extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-541"}}
+ :aliases {:test {:extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-541"}
+                                nubank/matcher-combinators {:mvn/version "2.1.1"}}
                   :extra-paths ["test"]}}}

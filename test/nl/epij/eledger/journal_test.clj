@@ -62,3 +62,5 @@ P 2019-01-01 $ € 0.9
   [~:funds/food]  R$ 20
   [~:assets/cash]  R$ -20
   (Funds:Shawarma Time!)  R$ 1337")))))
+
+
