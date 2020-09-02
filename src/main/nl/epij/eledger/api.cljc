@@ -1,8 +1,6 @@
 (ns nl.epij.eledger.api
   (:require [nl.epij.eledger.journal :as journal]
             [nl.epij.eledger :as eledger]
-            [clojure.spec.gen.alpha :as gen]
-            [clojure.spec.alpha :as s]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
             [nl.epij.eledger.line-item :as line-item]
@@ -65,18 +63,16 @@
       0 {:nl.epij.eledger.report/output (f (get sh-result :out))}
       {:nl.epij.eledger.report/error (get sh-result :err)})))
 
-(s/fdef eledger
-        :args (s/cat :transactions ::eledger/transactions
-                     :command (s/with-gen keyword? #(gen/return ::eledger/edn-register))
-                     :query (s/with-gen (s/coll-of string?) #(gen/return []))
-                     :options (s/with-gen map? #(gen/return {})))
-        :ret (s/keys :req [::eledger/line-items]))
+;(s/fdef eledger
+;        :args (s/cat :transactions ::eledger/transactions
+;                     :command (s/with-gen keyword? #(gen/return ::eledger/edn-register))
+;                     :query (s/with-gen (s/coll-of string?) #(gen/return []))
+;                     :options (s/with-gen map? #(gen/return {})))
+;        :ret (s/keys :req [::eledger/line-items]))
 
 (comment
 
   (set! *print-length* 20)
-
-  (gen/sample (s/gen ::eledger/transactions) 1)
 
   (::eledger/line-items (eledger [{::eledger/date           "2019-06-01"
                                    ::eledger/transaction-id #uuid "960e3e3d-1d5d-45d9-aa92-50f7bfcd2efc"
@@ -92,13 +88,5 @@
                                                         ::eledger/amount  "USD 1"}
                                                        {::eledger/account :assets/checking}]}]
                                  ::eledger/edn-register))
-
-  (s/exercise-fn `eledger 1)
-
-  (eledger (gen/sample (s/gen ::eledger/transaction)) "bal")
-
-  (journal (gen/sample (s/gen ::eledger/transaction)))
-
-  (gen/sample (s/gen ::eledger/transaction))
 
   )
