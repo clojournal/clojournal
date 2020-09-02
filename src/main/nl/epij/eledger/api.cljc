@@ -80,7 +80,7 @@
                                    ::eledger/postings       [{::eledger/account :expenses/food
                                                               ::eledger/amount  "R$ 20"}
                                                              {::eledger/account :assets/cash}]}
-                                  {::eledger/date     #time/date "2019-07-01"
+                                  {::eledger/date     "2019-07-01"
                                    ::eledger/payee    "Interactive Brokers"
                                    ::eledger/postings [{::eledger/account :assets/stocks
                                                         ::eledger/amount  "USD 1336"}
