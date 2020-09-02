@@ -1,7 +1,6 @@
 (ns nl.epij.eledger
   (:require #_[clojure.spec.alpha :as s]
             #_[clojure.spec.gen.alpha :as gen]
-            [tick.alpha.api :as t]
             [clojure.string :as str]
             [nl.epij.eledger.monetary-amount :as monetary-amount]
             [nl.epij.eledger.line-item :as line-item]))
