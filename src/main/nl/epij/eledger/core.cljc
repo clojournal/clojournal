@@ -1,7 +1,7 @@
 (ns nl.epij.eledger.core
   (:require [nl.epij.eledger :as eledger]
             [tick.alpha.api :as t]
-            [clojure.spec.alpha :as s]
+            ;[clojure.spec.alpha :as s]
             [nl.epij.eledger.journal :as journal]
             [clojure.test.check.generators :as gen]
             [clojure.java.shell :as sh]
@@ -13,9 +13,9 @@
         result (sh/sh "ledger" "source" "-f" "-" "--permissive" :in sample)]
     (assoc result :journal sample)))
 
-(s/fdef balance
-        :args (s/cat :transactions ::eledger/transactions)
-        :ret (s/keys :req-un [::exit]))
+;(s/fdef balance
+;        :args (s/cat :transactions ::eledger/transactions)
+;        :ret (s/keys :req-un [::exit]))
 
 (comment
 
