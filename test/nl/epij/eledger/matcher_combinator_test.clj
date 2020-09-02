@@ -13,6 +13,6 @@
   (is (match? {:name/first "Alfredo"
                :age        5}
               {:name/first  "Alfredo"
-               :age         8
+               :age        5
                :name/last   "da Rocha Viana"
                :name/suffix "Jr."})))
