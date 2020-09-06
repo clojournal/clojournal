@@ -1,4 +1,4 @@
-# eledger [![CircleCI](https://circleci.com/gh/pepijn/eledger.svg?style=svg&circle-token=27f5ba848e50cda482c8b46f5a6835ff571ba9f3)](https://circleci.com/gh/pepijn/eledger)
+# clojournal [![CircleCI](https://circleci.com/gh/pepijn/eledger.svg?style=svg&circle-token=27f5ba848e50cda482c8b46f5a6835ff571ba9f3)](https://circleci.com/gh/pepijn/eledger)
 
 **WARNING: Project in alpha state, not really usable yet!**
 
@@ -20,7 +20,7 @@ macOS with Homebrew: `brew install ledger`
 
 Use the `api/eledger` function.
 
-### `(nl.epij.eledger.api/eledger [transactions command options])`
+### `(com.clojournal.alpha.api/eledger [transactions command options])`
 
 It takes a collection of transactions, a command and options:
 

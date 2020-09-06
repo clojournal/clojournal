@@ -1,10 +1,10 @@
-(ns nl.epij.eledger
+(ns com.clojournal.alpha
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as gen]
             [tick.alpha.api :as t]
             [clojure.string :as str]
-            [nl.epij.eledger.monetary-amount :as monetary-amount]
-            [nl.epij.eledger.line-item :as line-item]))
+            [com.clojournal.alpha.monetary-amount :as monetary-amount]
+            [com.clojournal.alpha.line-item :as line-item]))
 
 
 (s/def ::date (s/or :date (s/with-gen #(= (type %) java.time.LocalDate)
