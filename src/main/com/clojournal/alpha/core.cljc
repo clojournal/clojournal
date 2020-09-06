@@ -1,8 +1,8 @@
-(ns nl.epij.eledger.core
-  (:require [nl.epij.eledger :as eledger]
+(ns com.clojournal.alpha.core
+  (:require [com.clojournal.alpha :as eledger]
             [tick.alpha.api :as t]
             ;[clojure.spec.alpha :as s]
-            [nl.epij.eledger.journal :as journal]
+            [com.clojournal.alpha.journal :as journal]
             [clojure.test.check.generators :as gen]
             [clojure.java.shell :as sh]
             [clojure.string :as str]))

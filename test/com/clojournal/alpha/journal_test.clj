@@ -1,11 +1,11 @@
-(ns nl.epij.eledger.journal-test
+(ns com.clojournal.alpha.journal-test
   (:require [clojure.test :refer :all]
             [clojure.spec.test.alpha :as stest]
-            [nl.epij.eledger.api :as api]
+            [com.clojournal.alpha.api :as api]
             [clojure.spec.gen.alpha :as gen]
             [clojure.spec.alpha :as s]
-            [nl.epij.eledger :as eledger]
-            [nl.epij.eledger.virtual :as virtual]
+            [com.clojournal.alpha :as eledger]
+            [com.clojournal.alpha.virtual :as virtual]
             [clojure.string :as str]))
 
 (deftest journal-generation

@@ -1,9 +1,9 @@
-(ns nl.epij.eledger.api
-  (:require [nl.epij.eledger.journal :as journal]
-            [nl.epij.eledger :as eledger]
+(ns com.clojournal.alpha.api
+  (:require [com.clojournal.alpha.journal :as journal]
+            [com.clojournal.alpha :as eledger]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
-            [nl.epij.eledger.line-item :as line-item]
+            [com.clojournal.alpha.line-item :as line-item]
             [clojure.edn :as edn]))
 
 (defn journal
@@ -39,9 +39,9 @@
 (def readers {'eledger/lot (fn [x]
                              (mapv (fn [y]
                                      (let [[_ quantity price date] (re-matches #"(.+) \{(.+)\} \[(.+)\]" y)]
-                                       {:nl.epij.eledger.lot/quantity quantity
-                                        :nl.epij.eledger.lot/price    price
-                                        :nl.epij.eledger.lot/date     date}))
+                                       {:com.clojournal.alpha.lot/quantity quantity
+                                        :com.clojournal.alpha.lot/price    price
+                                        :com.clojournal.alpha.lot/date     date}))
                                    (str/split-lines x)))})
 
 (defn eledger
@@ -60,8 +60,8 @@
         sh-result    (apply shell/sh ledger-args)
         f            (comp (partial edn/read-string {:readers readers}) #(format "[%s]" %))]
     (case (get sh-result :exit)
-      0 {:nl.epij.eledger.report/output (f (get sh-result :out))}
-      {:nl.epij.eledger.report/error (get sh-result :err)})))
+      0 {:com.clojournal.alpha.report/output (f (get sh-result :out))}
+      {:com.clojournal.alpha.report/error (get sh-result :err)})))
 
 ;(s/fdef eledger
 ;        :args (s/cat :transactions ::eledger/transactions

@@ -20,7 +20,7 @@ macOS with Homebrew: `brew install ledger`
 
 Use the `api/eledger` function.
 
-### `(nl.epij.eledger.api/eledger [transactions command options])`
+### `(com.clojournal.alpha.api/eledger [transactions command options])`
 
 It takes a collection of transactions, a command and options:
 

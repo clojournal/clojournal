@@ -1,4 +1,4 @@
-(ns nl.epij.eledger.matcher-combinator-test
+(ns com.clojournal.alpha.matcher-combinator-test
   (:require [clojure.test :refer :all]
             [matcher-combinators.test]
             [matcher-combinators.matchers :as m]))

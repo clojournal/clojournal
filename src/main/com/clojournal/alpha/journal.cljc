@@ -1,6 +1,6 @@
-(ns nl.epij.eledger.journal
-  (:require [nl.epij.eledger :as eledger]
-            [nl.epij.eledger.virtual :as virtual]
+(ns com.clojournal.alpha.journal
+  (:require [com.clojournal.alpha :as eledger]
+            [com.clojournal.alpha.virtual :as virtual]
             [clojure.string :as str]))
 
 (defn ledger-account
