@@ -1,4 +1,4 @@
-# clojournal [![CircleCI](https://circleci.com/gh/pepijn/eledger.svg?style=svg&circle-token=27f5ba848e50cda482c8b46f5a6835ff571ba9f3)](https://circleci.com/gh/pepijn/eledger)
+# clojournal [![CircleCI](https://circleci.com/gh/clojournal/clojournal.svg?style=svg&circle-token=27f5ba848e50cda482c8b46f5a6835ff571ba9f3)](https://circleci.com/gh/pepijn/eledger)
 
 **WARNING: Project in alpha state, not really usable yet!**
 
