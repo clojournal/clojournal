@@ -16,7 +16,7 @@
                         ::eledger/postings       [{::eledger/account :expenses/food
                                                    ::eledger/amount  "R$ 20"}
                                                   {::eledger/account :assets/cash}]}
-                       {::eledger/date     #time/date "2019-07-01"
+                       {::eledger/date     "2019-07-01"
                         ::eledger/payee    "Interactive Brokers"
                         ::eledger/postings [{::eledger/account :assets/stocks
                                              ::eledger/amount  "USD 1336"}
@@ -41,7 +41,8 @@ P 2019-01-01 $ € 0.9
 2019-07-01 Interactive Brokers
   ~:assets/stocks  USD 1336
   Expenses:Commissions  USD 1
-  ~:assets/checking")))
+  ~:assets/checking
+")))
 
   (testing "virtual postings"
     (is (= (-> (api/journal [{::eledger/date     "2019-06-01"
@@ -61,4 +62,7 @@ P 2019-01-01 $ € 0.9
 2019-06-01 Mister Shawarma
   [~:funds/food]  R$ 20
   [~:assets/cash]  R$ -20
-  (Funds:Shawarma Time!)  R$ 1337")))))
+  (Funds:Shawarma Time!)  R$ 1337
+")))))
+
+
