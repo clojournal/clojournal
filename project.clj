@@ -2,7 +2,7 @@
 ;; To change dependencies, update deps.edn and run script/update-project.clj.template.
 ;; To change other things, edit project.template.clj and run script/update-project.clj.template.
 
-(defproject com.clojournal/clojournal "0.1.0-alpha2"
+(defproject com.clojournal/clojournal "0.1.0-alpha3"
   :description "Turns Clojure data structures into plain text accounting journals"
   :url "https://github.com/clojournal/clojournal"
   :scm {:name "git"
