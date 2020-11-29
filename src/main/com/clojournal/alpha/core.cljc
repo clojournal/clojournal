@@ -1,6 +1,5 @@
 (ns com.clojournal.alpha.core
   (:require [com.clojournal.alpha :as eledger]
-            [tick.alpha.api :as t]
             ;[clojure.spec.alpha :as s]
             [com.clojournal.alpha.journal :as journal]
             [clojure.test.check.generators :as gen]

@@ -2,16 +2,12 @@
 ;; To change dependencies, update deps.edn and run script/update-project.clj.template.
 ;; To change other things, edit project.template.clj and run script/update-project.clj.template.
 
-(defproject com.clojournal/clojournal "0.1.0-alpha1"
+(defproject com.clojournal/clojournal "0.1.0-alpha2"
   :description "Turns Clojure data structures into plain text accounting journals"
   :url "https://github.com/clojournal/clojournal"
   :scm {:name "git"
           :url "https://github.com/clojournal/clojournal"}
   :license {:name "MIT"
             :url  "https://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.9.0"]
-                 [org.clojure/clojure "1.10.1"]
-                 [org.clojure/test.check "0.10.0"]]
-  :profiles {:test {:dependencies [[lambdaisland/kaocha "0.0-541"]
-                                   [nubank/matcher-combinators "2.1.1"]]
-                    :source-paths ["src"]}})
+  :dependencies [[org.clojure/clojure "1.9.0"]]
+  :source-paths ["src/main"])

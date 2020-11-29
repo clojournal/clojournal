@@ -5,4 +5,5 @@
           :url "https://github.com/clojournal/clojournal"}
   :license {:name "MIT"
             :url  "https://opensource.org/licenses/MIT"}
-  :dependencies {{dependencies|safe}})
+  :dependencies {{dependencies|safe}}
+  :source-paths ["src/main"])
