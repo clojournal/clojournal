@@ -6,7 +6,7 @@
 (require '[clojure.string :as str])
 (require '[clojure.edn :as edn])
 
-(def version "0.1.0-alpha2")
+(def version "0.1.0-alpha3")
 
 (def deps-edn (edn/read-string (slurp "deps.edn")))
 
