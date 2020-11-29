@@ -1,11 +1,9 @@
 (ns com.clojournal.alpha
-  (:require
-    ;[clojure.spec.alpha :as s]
-    ;[clojure.spec.gen.alpha :as gen]
-    ;[tick.alpha.api :as t]
-    [clojure.string :as str]
-    [com.clojournal.alpha.monetary-amount :as monetary-amount]
-    [com.clojournal.alpha.line-item :as line-item]))
+  ; (:require
+  ;[clojure.spec.alpha :as s]
+  ;[clojure.spec.gen.alpha :as gen]
+  ;[tick.alpha.api :as t])
+  )
 
 
 ;(s/def ::date (s/or :date (s/with-gen #(= (type %) java.time.LocalDate)

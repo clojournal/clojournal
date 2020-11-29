@@ -1,6 +1,9 @@
-# clojournal [![CircleCI](https://circleci.com/gh/clojournal/clojournal.svg?style=svg&circle-token=27f5ba848e50cda482c8b46f5a6835ff571ba9f3)](https://circleci.com/gh/pepijn/eledger)
+# clojournal [![CircleCI](https://circleci.com/gh/clojournal/clojournal.svg?style=svg&circle-token=27f5ba848e50cda482c8b46f5a6835ff571ba9f3)](https://circleci.com/gh/pepijn/eledger) [![Clojars Project](https://img.shields.io/clojars/v/com.clojournal/clojournal.svg)](https://clojars.org/com.clojournal/clojournal)
 
 **WARNING: Project in alpha state, not really usable yet!**
+To get an idea how to use the library, take a look at the following _recipes_:
+- https://github.com/pepijn/clojournal-recipe-option-vesting
+- https://github.com/pepijn/clojournal-recipe-asn-bank
 
 Ledger CLI wrapper that supports EDN input and output. Useful for those who want to benefit from both Ledger's power and EDN's flexibility. This library enables you to interact with ledger using EDN collections as input and output—no need to format journal files (input) and parse CSV (output).
 

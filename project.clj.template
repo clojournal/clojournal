@@ -1,0 +1,9 @@
+(defproject com.clojournal/clojournal "{{version}}"
+  :description "Turns Clojure data structures into plain text accounting journals"
+  :url "https://github.com/clojournal/clojournal"
+  :scm {:name "git"
+          :url "https://github.com/clojournal/clojournal"}
+  :license {:name "MIT"
+            :url  "https://opensource.org/licenses/MIT"}
+  :dependencies {{dependencies|safe}}
+  :source-paths ["src/main"])
