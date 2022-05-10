@@ -6,6 +6,8 @@
             [clojure.spec.alpha :as s]
             [com.clojournal.alpha :as eledger]
             [com.clojournal.alpha.virtual :as virtual]
+            [com.clojournal.alpha.lot :as lot]
+            [com.clojournal.alpha.cost :as cost]
             [clojure.string :as str]))
 
 (deftest journal-generation
@@ -63,6 +65,21 @@ P 2019-01-01 $ € 0.9
   [~:funds/food]  R$ 20
   [~:assets/cash]  R$ -20
   (Funds:Shawarma Time!)  R$ 1337
-")))))
+"))))
+
+  (is (= (api/journal [{::eledger/date     "2022-05-10"
+                        ::eledger/postings [{::eledger/account "Assets:Stocks"
+                                             ::eledger/amount  {::eledger/amount "1 AAPL"
+                                                                ::lot/total      "100 USD"
+                                                                ::cost/total     "99 USD"}}
+                                            {::eledger/account "Expenses:Commissions"
+                                             ::eledger/amount  "1 USD"}
+                                            {::eledger/account "Assets:Cash"}]}])
+         (str/triml "
+2022-05-10
+  Assets:Stocks  1 AAPL {{100 USD}} @@ 99 USD
+  Expenses:Commissions  1 USD
+  Assets:Cash
+"))))
 
 

@@ -1,6 +1,8 @@
 (ns com.clojournal.alpha.journal
   (:require [com.clojournal.alpha :as eledger]
             [com.clojournal.alpha.virtual :as virtual]
+            [com.clojournal.alpha.lot :as lot]
+            [com.clojournal.alpha.cost :as cost]
             [clojure.string :as str]))
 
 (defn ledger-account
@@ -43,9 +45,21 @@
                                                     account           (ledger-account account virtual)
                                                     balance-assertion (if balance
                                                                         (str " = " balance)
-                                                                        "")]]
+                                                                        "")
+                                                    amount'           (cond
+                                                                        (map? amount)
+                                                                        (let [{base ::eledger/amount
+                                                                               lot  ::lot/total
+                                                                               cost ::cost/total}
+                                                                              amount]
+                                                                          (format "%s {{%s}} @@ %s"
+                                                                                  base
+                                                                                  lot
+                                                                                  cost))
+
+                                                                        :else amount)]]
                                           (apply str (concat [memo "  " account]
-                                                             (if amount ["  " amount] [])
+                                                             (if amount ["  " amount'] [])
                                                              [balance-assertion "\n"])))
                          payee          (cond
                                           (keyword? payee) (str "~" payee)
@@ -55,5 +69,5 @@
                  (some? price) (str "P " date " " commodity " " price "\n")
                  (string? transaction) transaction
                  :else
-                 (str/join (conj tx-postings (str date status transaction-id " " payee memo "\n")))))]
+                 (str/join (conj tx-postings (str date status transaction-id (when payee (str " " payee)) memo "\n")))))]
      (str/join "\n" all))))
