@@ -19,14 +19,14 @@
   ([transactions] (anti-corrupt transactions {}))
   ([transactions options]
    (let [all (for [transaction transactions
-                   :let [{:keys [::eledger/date
-                                 ::eledger/transaction-id
-                                 ::eledger/payee
-                                 ::eledger/memo
-                                 ::eledger/postings
-                                 ::eledger/status
-                                 ::eledger/commodity
-                                 ::eledger/price]} transaction
+                   :let [{::eledger/keys [date
+                                          transaction-id
+                                          payee
+                                          memo
+                                          postings
+                                          status
+                                          commodity
+                                          price]} transaction
                          transaction-id (if transaction-id
                                           (str " (" transaction-id ")")
                                           "")
@@ -34,11 +34,11 @@
                                           ::eledger/cleared " *"
                                           "")
                          tx-postings    (for [posting postings
-                                              :let [{:keys [::eledger/account
-                                                            ::eledger/amount
-                                                            ::eledger/balance
-                                                            ::eledger/memo
-                                                            ::eledger/virtual]} posting
+                                              :let [{::eledger/keys [account
+                                                                     amount
+                                                                     balance
+                                                                     memo
+                                                                     virtual]} posting
                                                     memo              (if memo (str "  ;" memo "\n") "")
                                                     account           (ledger-account account virtual)
                                                     balance-assertion (if balance
