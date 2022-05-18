@@ -52,10 +52,13 @@
                                                                                lot  ::lot/total
                                                                                cost ::cost/total}
                                                                               amount]
-                                                                          (format "%s {{%s}} @@ %s"
-                                                                                  base
-                                                                                  lot
-                                                                                  cost))
+                                                                          (reduce (fn [a x]
+                                                                                    (str a " @@ " x))
+                                                                                  (remove nil?
+                                                                                          [(format "%s {{%s}}"
+                                                                                                   base
+                                                                                                   lot)
+                                                                                           cost])))
 
                                                                         :else amount)]]
                                           (apply str (concat [memo "  " account]

@@ -80,6 +80,20 @@ P 2019-01-01 $ € 0.9
   Assets:Stocks  1 AAPL {{100 USD}} @@ 99 USD
   Expenses:Commissions  1 USD
   Assets:Cash
+")))
+
+  (is (= (api/journal [{::eledger/date     "2022-05-10"
+                        ::eledger/postings [{::eledger/account "Assets:Stocks"
+                                             ::eledger/amount  {::eledger/amount "1 AAPL"
+                                                                ::lot/total      "100 USD"}}
+                                            {::eledger/account "Expenses:Commissions"
+                                             ::eledger/amount  "1 USD"}
+                                            {::eledger/account "Assets:Cash"}]}])
+         (str/triml "
+2022-05-10
+  Assets:Stocks  1 AAPL {{100 USD}}
+  Expenses:Commissions  1 USD
+  Assets:Cash
 "))))
 
 
